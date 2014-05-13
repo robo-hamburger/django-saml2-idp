@@ -12,7 +12,7 @@ Fork from http://django-saml2-idp.googlecode.com.
 Notes
 -----------------------
 
-Supports Django 1.6.x.
+Supports Django 1.5 - 1.6.x
 
 Test Application
 ----------------------

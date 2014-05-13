@@ -8,6 +8,7 @@ setup(
     description = 'SAML 2.0 IdP for Django',
     long_description = 'SAML 2.0 Identity Provider app for Django projects.',
     install_requires = [
+        'Django',
         'M2Crypto>=0.20.1',
         'BeautifulSoup>=3.2.0',
     ],
