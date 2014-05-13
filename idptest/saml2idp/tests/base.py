@@ -7,9 +7,9 @@ from django.http import HttpResponseRedirect
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.test import TestCase
-from .. import codex
-from .. import exceptions
-from .. import saml2idp_metadata
+from saml2idp import codex
+from saml2idp import exceptions
+from saml2idp import saml2idp_metadata
 
 class SamlTestCase(TestCase):
     """
@@ -62,12 +62,7 @@ class SamlTestCase(TestCase):
         return # not returning anything
 
 
-class TestBaseProcessor(SamlTestCase):
-    """
-    Sub-classes must provide these class properties:
-    SP_CONFIG = ServicePoint metadata settings to use.
-    REQUEST_DATA = dictionary containing 'SAMLRequest' and 'RelayState' keys.
-    """
+class BaseProcessor(SamlTestCase):
     USERNAME = 'fred'
     PASSWORD = 'secret'
     EMAIL = 'fred@example.com'

@@ -9,7 +9,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.test.client import Client
-from .. import exceptions
+from saml2idp import exceptions
 
 
 SAML_REQUEST = 'this is not a real SAML Request'
@@ -77,6 +77,7 @@ class TestLoginProcessView(TestCase):
 
         # Act and assert:
         func = lambda : self.client.get('/idp/login/process/')
+        
         self.assertRaises(exceptions.CannotHandleAssertion, func)
 
 class TestLogoutView(TestCase):

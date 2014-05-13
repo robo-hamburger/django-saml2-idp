@@ -2,7 +2,7 @@
 Tests for the Google Apps processor.
 """
 # local imports:
-from .. import codex
+from saml2idp import codex
 import base
 
 SAML_REQUEST = codex.deflate_and_base64_encode(
@@ -32,7 +32,7 @@ REQUEST_DATA = {
 }
 GOOGLE_APPS_ACS = 'https://www.google.com/a/example.com/acs'
 
-class TestGoogleAppsProcessor(base.TestBaseProcessor):
+class TestGoogleAppsProcessor(base.BaseProcessor):
     SP_CONFIG = {
         'acs_url': GOOGLE_APPS_ACS,
         'processor': 'saml2idp.google_apps.Processor',
