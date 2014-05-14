@@ -6,7 +6,7 @@ import uuid
 # Django/other library imports:
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
-from django.core.exceptions import ImproperlyConfigured
+from django.core.exceptions import ImproperlyConfigured, PermissionDenied
 from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
@@ -27,9 +27,7 @@ def _generate_response(request, processor, extra_context={}):
         context = processor.generate_response()
         context.update(extra_context)
     except exceptions.UserNotAuthorized:
-        return render_to_response('saml2idp/invalid_user.html',
-                                  extra_context,
-                                  context_instance=RequestContext(request))
+        raise PermissionDenied()
 
     return render_to_response('saml2idp/login.html', context,
                                 context_instance=RequestContext(request))
