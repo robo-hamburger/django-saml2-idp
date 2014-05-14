@@ -12,6 +12,8 @@ import exceptions
 import saml2idp_metadata
 import xml_render
 
+logger = logging.getLogger(__name__)
+
 MINUTES = 60
 HOURS = 60 * MINUTES
 
@@ -36,7 +38,6 @@ class Processor(object):
 
     def __init__(self, config):
         self._config = config
-        self._logger = logging.getLogger(self.__class__.__name__)
 
     def _build_assertion(self):
         """
@@ -138,6 +139,8 @@ class Processor(object):
         """
         sign_it=saml2idp_metadata.SAML2IDP_CONFIG['signing']
         self._response_xml = xml_render.get_response_xml(self._response_params, signed=sign_it)
+        
+        logger.debug('SAML Response: %s', self._response_xml)
 
     def _get_django_response_params(self):
         """
@@ -211,7 +214,7 @@ class Processor(object):
     def _validate_user(self):
         """
         Validates the User. Sub-classes should override this and
-        throw an CannotHandleAssertion Exception if the validation does not succeed.
+        throw an UserNotAuthorized Exception if the validation does not succeed.
         """
         pass
 
@@ -227,7 +230,7 @@ class Processor(object):
             self._parse_request()
         except Exception, e:
             msg = 'Exception while reading request: %s' % e
-            self._logger.debug(msg)
+            logger.debug(msg)
             raise exceptions.CannotHandleAssertion(msg)
 
         self._validate_request()
