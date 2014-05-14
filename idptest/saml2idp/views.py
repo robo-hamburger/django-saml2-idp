@@ -18,18 +18,20 @@ import metadata
 import registry
 import xml_signing
 
-def _generate_response(request, processor):
+def _generate_response(request, processor, extra_context={}):
     """
     Generate a SAML response using processor and return it in the proper Django
     response.
     """
     try:
-        tv = processor.generate_response()
+        context = processor.generate_response()
+        context.update(extra_context)
     except exceptions.UserNotAuthorized:
         return render_to_response('saml2idp/invalid_user.html',
+                                  extra_context,
                                   context_instance=RequestContext(request))
 
-    return render_to_response('saml2idp/login.html', tv,
+    return render_to_response('saml2idp/login.html', context,
                                 context_instance=RequestContext(request))
 
 def xml_response(request, template, tv):
@@ -51,7 +53,7 @@ def login_begin(request, *args, **kwargs):
     return redirect('saml_login_process')
 
 @login_required
-def login_init(request, resource, **kwargs):
+def login_init(request, resource, extra_context={}, **kwargs):
     """
     Initiates an IdP-initiated link to a simple SP resource/target URL.
     """
